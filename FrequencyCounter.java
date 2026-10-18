@@ -4,7 +4,6 @@ import java.util.Map;
 
 public class FrequencyCounter {
 
-    // Module 1: Count the frequency of each character
     public static Map<Character, Integer> countFrequencies(
             String text) {
 
