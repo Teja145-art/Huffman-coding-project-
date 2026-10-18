@@ -1,0 +1,91 @@
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+// Module 2: Minimum Heap Creation
+public class MinHeap {
+
+    // Represents a character and its frequency
+    public static class HeapNode {
+        public char character;
+        public int frequency;
+
+        public HeapNode(char character, int frequency) {
+            this.character = character;
+            this.frequency = frequency;
+        }
+    }
+
+    // Stores heap nodes
+    private final List<HeapNode> heap = new ArrayList<>();
+
+    // Returns the number of nodes
+    public int size() {
+        return heap.size();
+    }
+
+    // Checks whether the heap is empty
+    public boolean isEmpty() {
+        return heap.isEmpty();
+    }
+
+    // Swaps two nodes
+    private void swap(int i, int j) {
+        HeapNode temp = heap.get(i);
+        heap.set(i, heap.get(j));
+        heap.set(j, temp);
+    }
+
+    // Restores min-heap order upwards
+    private void heapifyUp(int index) {
+        while (index > 0) {
+            int parent = (index - 1) / 2;
+
+            if (heap.get(parent).frequency
+                    <= heap.get(index).frequency) {
+                break;
+            }
+
+            swap(parent, index);
+            index = parent;
+        }
+    }
+
+    // Inserts a character-frequency pair
+    public void insert(char character, int frequency) {
+        heap.add(new HeapNode(character, frequency));
+        heapifyUp(heap.size() - 1);
+    }
+
+    // Creates the heap using Module 1's frequency map
+    public void buildMinHeap(Map<Character, Integer> frequencies) {
+        heap.clear();
+
+        for (Map.Entry<Character, Integer> entry
+                : frequencies.entrySet()) {
+            insert(entry.getKey(), entry.getValue());
+        }
+    }
+
+    // Returns the smallest-frequency node
+    public HeapNode peekMin() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Heap is empty");
+        }
+
+        return heap.get(0);
+    }
+
+    // Displays all nodes in heap-array order
+    public void displayHeap() {
+        System.out.println("Min Heap:");
+
+        for (HeapNode node : heap) {
+            System.out.println(
+                "Character: " + node.character
+                + ", Frequency: " + node.frequency
+            );
+        }
+    }
+}
