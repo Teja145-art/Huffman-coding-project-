@@ -1,38 +1,59 @@
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        // Sample character frequencies for Module 3
+        Map<Character, Integer> frequencies = new HashMap<>();
 
-        // Read input text
-        System.out.println("===== Huffman Compressor =====");
-        System.out.print("Enter the text to compress: ");
+        frequencies.put('A', 4);
+        frequencies.put('B', 2);
+        frequencies.put('C', 1);
+        frequencies.put('D', 3);
 
-        String text = scanner.nextLine();
+        // Module 3: Construct the Huffman tree
+        HuffmanTree.TreeNode root =
+                HuffmanTree.buildTree(frequencies);
 
-        if (text.isEmpty()) {
-            System.out.println("Input text cannot be empty.");
-            scanner.close();
+        // Check whether the tree was created
+        if (root == null) {
+            System.out.println("Huffman tree could not be created.");
             return;
         }
 
-        // Module 1: Count character frequencies
-        Map<Character, Integer> frequencies = FrequencyCounter.countFrequencies(text);
+        System.out.println("Huffman Tree Created Successfully!");
+        System.out.println("Root Frequency: " + root.frequency);
 
-        // Display character frequencies
-        System.out.println("\nCharacter Frequencies:");
+        // Display the tree structure
+        System.out.println("\nHuffman Tree Structure:");
+        displayTree(root, "");
+    }
 
-        for (Map.Entry<Character, Integer> entry : frequencies.entrySet()) {
+    // Display each node recursively
+    public static void displayTree(
+            HuffmanTree.TreeNode node, String indent) {
 
-            System.out.println(
-                    "'" + entry.getKey() + "' : "
-                            + entry.getValue());
+        if (node == null) {
+            return;
         }
 
-        scanner.close();
+        if (node.isLeaf()) {
+            System.out.println(
+                indent + "Character: '" + node.character
+                + "', Frequency: " + node.frequency
+            );
+        } else {
+            System.out.println(
+                indent + "Internal Node, Frequency: "
+                + node.frequency
+            );
+        }
+
+        displayTree(node.left, indent + "  ");
+        displayTree(node.right, indent + "  ");
     }
 }
+
